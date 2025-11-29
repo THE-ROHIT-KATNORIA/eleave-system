@@ -1,0 +1,7 @@
+🔐 Demo Credentials
+Administrator
+Email: admin@college.edu
+Password: admin123
+Students
+Email: john@student.edu | Password: student123 | Stream: BCA
+Email: jane@student.edu | Password: student123 | Stream: BA

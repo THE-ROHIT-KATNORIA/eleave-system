@@ -1,0 +1,174 @@
+.calendar-3d-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  background: linear-gradient(145deg, #ffffff, #f8fafc);
+  border-radius: 20px;
+  box-shadow: 
+    20px 20px 40px rgba(0,0,0,0.1),
+    -20px -20px 40px rgba(255,255,255,0.8);
+  padding: 20px;
+  transform-style: preserve-3d;
+}
+
+.calendar-header {
+  margin-bottom: 20px;
+}
+
+.weekday-labels {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.weekday-label {
+  text-align: center;
+  font-weight: 600;
+  color: #64748b;
+  font-size: 14px;
+  padding: 8px;
+  background: linear-gradient(145deg, #f1f5f9, #e2e8f0);
+  border-radius: 8px;
+  box-shadow: 
+    inset 2px 2px 4px rgba(0,0,0,0.1),
+    inset -2px -2px 4px rgba(255,255,255,0.8);
+}
+
+.calendar-3d-canvas {
+  height: 400px;
+  width: 100%;
+  border-radius: 15px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 
+    inset 5px 5px 10px rgba(0,0,0,0.2),
+    inset -5px -5px 10px rgba(255,255,255,0.1);
+}
+
+.calendar-info {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.month-display {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 10px 0;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.selection-count {
+  font-size: 16px;
+  color: #64748b;
+  margin: 0;
+  padding: 10px 20px;
+  background: linear-gradient(145deg, #f8fafc, #e2e8f0);
+  border-radius: 25px;
+  display: inline-block;
+  box-shadow: 
+    5px 5px 10px rgba(0,0,0,0.1),
+    -5px -5px 10px rgba(255,255,255,0.8);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .calendar-3d-container {
+    padding: 15px;
+    margin: 10px;
+  }
+  
+  .calendar-3d-canvas {
+    height: 300px;
+  }
+  
+  .weekday-label {
+    font-size: 12px;
+    padding: 6px;
+  }
+  
+  .month-display {
+    font-size: 20px;
+  }
+  
+  .selection-count {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-3d-container {
+    padding: 10px;
+  }
+  
+  .calendar-3d-canvas {
+    height: 250px;
+  }
+  
+  .weekday-labels {
+    gap: 5px;
+  }
+  
+  .weekday-label {
+    font-size: 10px;
+    padding: 4px;
+  }
+}
+
+/* Animation classes */
+.calendar-3d-container.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.calendar-3d-container.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #6366f1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Accessibility improvements */
+.calendar-3d-container:focus-within {
+  outline: 2px solid #6366f1;
+  outline-offset: 4px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .calendar-3d-container {
+    border: 2px solid #000000;
+  }
+  
+  .weekday-label {
+    border: 1px solid #000000;
+  }
+  
+  .month-display {
+    color: #000000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .calendar-3d-container,
+  .weekday-label,
+  .selection-count {
+    transition: none;
+    animation: none;
+  }
+}
