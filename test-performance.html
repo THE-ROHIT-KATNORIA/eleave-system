@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Test - E-Leave System</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+        .success {
+            background: #d1fae5;
+            border: 2px solid #10b981;
+            color: #065f46;
+        }
+        .warning {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            color: #92400e;
+        }
+        .error {
+            background: #fee2e2;
+            border: 2px solid #ef4444;
+            color: #991b1b;
+        }
+        .loading {
+            background: #dbeafe;
+            border: 2px solid #3b82f6;
+            color: #1e40af;
+        }
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8fafc;
+            border-radius: 5px;
+        }
+        .metric-label {
+            font-weight: 600;
+        }
+        .metric-value {
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Performance Test</h1>
+        <p class="subtitle">Test your E-Leave backend response time</p>
+        
+        <label for="backendUrl">Backend URL:</label>
+        <input 
+            type="text" 
+            id="backendUrl" 
+            placeholder="https://eleave-system.onrender.com"
+            value="https://eleave-system.onrender.com"
+        >
+        
+        <button onclick="testHealth()">Test Health Endpoint</button>
+        <button onclick="testPing()">Test Ping Endpoint</button>
+        <button onclick="runFullTest()">Run Full Test</button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const resultDiv = document.getElementById('result');
+        const backendUrlInput = document.getElementById('backendUrl');
+
+        function getBackendUrl() {
+            let url = backendUrlInput.value.trim();
+            if (!url) {
+                alert('Please enter your backend URL');
+                return null;
+            }
+            // Remove trailing slash
+            return url.replace(/\/$/, '');
+        }
+
+        function showResult(html, className) {
+            resultDiv.innerHTML = html;
+            resultDiv.className = `result ${className}`;
+        }
+
+        async function testHealth() {
+            const backendUrl = getBackendUrl();
+            if (!backendUrl) return;
+
+            showResult('⏳ Testing health endpoint...', 'loading');
+            
+            const start = performance.now();
+            try {
+                const response = await fetch(`${backendUrl}/api/health`);
+                const duration = performance.now() - start;
+                const data = await response.json();
+                
+                let status = 'success';
+                let emoji = '✅';
+                if (duration > 2000) {
+                    status = 'warning';
+                    emoji = '⚠️';
+                }
+                
+                showResult(`
+                    ${emoji} <strong>Health Check Result</strong><br><br>
+                    <div class="metric">
+                        <span class="metric-label">Response Time:</span>
+                        <span class="metric-value">${duration.toFixed(0)}ms</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Status:</span>
+                        <span class="metric-value">${data.status}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Database:</span>
+                        <span class="metric-value">${data.database || 'N/A'}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Message:</span>
+                        <span class="metric-value">${data.message}</span>
+                    </div>
+                    <br>
+                    <strong>Performance:</strong> ${duration < 500 ? 'Excellent 🎉' : duration < 2000 ? 'Good 👍' : 'Slow (possible cold start) 🐌'}
+                `, status);
+            } catch (error) {
+                const duration = performance.now() - start;
+                showResult(`
+                    ❌ <strong>Health Check Failed</strong><br><br>
+                    <div class="metric">
+                        <span class="metric-label">Error:</span>
+                        <span class="metric-value">${error.message}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Duration:</span>
+                        <span class="metric-value">${duration.toFixed(0)}ms</span>
+                    </div>
+                    <br>
+                    <strong>Possible causes:</strong><br>
+                    • Backend is down<br>
+                    • Wrong URL<br>
+                    • CORS not configured<br>
+                    • Network issue
+                `, 'error');
+            }
+        }
+
+        async function testPing() {
+            const backendUrl = getBackendUrl();
+            if (!backendUrl) return;
+
+            showResult('⏳ Testing ping endpoint...', 'loading');
+            
+            const start = performance.now();
+            try {
+                const response = await fetch(`${backendUrl}/api/ping`);
+                const duration = performance.now() - start;
+                const text = await response.text();
+                
+                let status = 'success';
+                let emoji = '✅';
+                if (duration > 1000) {
+                    status = 'warning';
+                    emoji = '⚠️';
+                }
+                
+                showResult(`
+                    ${emoji} <strong>Ping Test Result</strong><br><br>
+                    <div class="metric">
+                        <span class="metric-label">Response Time:</span>
+                        <span class="metric-value">${duration.toFixed(0)}ms</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Response:</span>
+                        <span class="metric-value">${text}</span>
+                    </div>
+                    <br>
+                    <strong>Performance:</strong> ${duration < 200 ? 'Excellent 🎉' : duration < 1000 ? 'Good 👍' : 'Slow 🐌'}
+                `, status);
+            } catch (error) {
+                const duration = performance.now() - start;
+                showResult(`
+                    ❌ <strong>Ping Test Failed</strong><br><br>
+                    <div class="metric">
+                        <span class="metric-label">Error:</span>
+                        <span class="metric-value">${error.message}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Duration:</span>
+                        <span class="metric-value">${duration.toFixed(0)}ms</span>
+                    </div>
+                `, 'error');
+            }
+        }
+
+        async function runFullTest() {
+            const backendUrl = getBackendUrl();
+            if (!backendUrl) return;
+
+            showResult('⏳ Running comprehensive performance test...', 'loading');
+            
+            const results = [];
+            
+            // Test 1: Ping
+            try {
+                const start = performance.now();
+                await fetch(`${backendUrl}/api/ping`);
+                const duration = performance.now() - start;
+                results.push({ name: 'Ping', duration, success: true });
+            } catch (error) {
+                results.push({ name: 'Ping', duration: 0, success: false, error: error.message });
+            }
+            
+            // Test 2: Health
+            try {
+                const start = performance.now();
+                const response = await fetch(`${backendUrl}/api/health`);
+                const duration = performance.now() - start;
+                const data = await response.json();
+                results.push({ name: 'Health', duration, success: true, data });
+            } catch (error) {
+                results.push({ name: 'Health', duration: 0, success: false, error: error.message });
+            }
+            
+            // Test 3: Multiple requests
+            const multiStart = performance.now();
+            const promises = [];
+            for (let i = 0; i < 5; i++) {
+                promises.push(fetch(`${backendUrl}/api/ping`));
+            }
+            try {
+                await Promise.all(promises);
+                const multiDuration = performance.now() - multiStart;
+                results.push({ name: 'Concurrent (5 requests)', duration: multiDuration, success: true });
+            } catch (error) {
+                results.push({ name: 'Concurrent', duration: 0, success: false, error: error.message });
+            }
+            
+            // Calculate average
+            const successfulTests = results.filter(r => r.success);
+            const avgDuration = successfulTests.reduce((sum, r) => sum + r.duration, 0) / successfulTests.length;
+            
+            let status = 'success';
+            let emoji = '✅';
+            if (avgDuration > 2000) {
+                status = 'warning';
+                emoji = '⚠️';
+            }
+            if (successfulTests.length < results.length) {
+                status = 'error';
+                emoji = '❌';
+            }
+            
+            let html = `${emoji} <strong>Full Performance Test Results</strong><br><br>`;
+            
+            results.forEach(result => {
+                const icon = result.success ? '✅' : '❌';
+                html += `
+                    <div class="metric">
+                        <span class="metric-label">${icon} ${result.name}:</span>
+                        <span class="metric-value">${result.success ? result.duration.toFixed(0) + 'ms' : 'Failed'}</span>
+                    </div>
+                `;
+            });
+            
+            html += `
+                <br>
+                <div class="metric">
+                    <span class="metric-label"><strong>Average Response Time:</strong></span>
+                    <span class="metric-value"><strong>${avgDuration.toFixed(0)}ms</strong></span>
+                </div>
+                <br>
+                <strong>Overall Assessment:</strong><br>
+                ${avgDuration < 500 ? '🎉 Excellent - Your backend is fast!' : 
+                  avgDuration < 2000 ? '👍 Good - Performance is acceptable' : 
+                  '🐌 Slow - Consider optimizations or upgrading hosting'}
+            `;
+            
+            showResult(html, status);
+        }
+    </script>
+</body>
+</html>

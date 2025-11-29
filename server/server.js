@@ -4,6 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 import connectDB from './config/database.js';
 import authRoutes from './routes/auth.js';
 import leavesRoutes from './routes/leaves.js';
@@ -46,9 +47,20 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Basic health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Server is running' });
+// Health check endpoint with database status
+app.get('/api/health', async (req, res) => {
+  const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+  res.json({ 
+    status: 'ok', 
+    message: 'Server is running',
+    database: dbStatus,
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Keep-alive endpoint for preventing cold starts
+app.get('/api/ping', (req, res) => {
+  res.status(200).send('pong');
 });
 
 // Serve uploaded files
@@ -96,6 +108,13 @@ app.use((req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  
+  // Start keep-alive in production to prevent cold starts
+  if (process.env.NODE_ENV === 'production' && process.env.RENDER_EXTERNAL_URL) {
+    import('./utils/keepAlive.js').then(({ startKeepAlive }) => {
+      startKeepAlive(process.env.RENDER_EXTERNAL_URL);
+    });
+  }
 });
 
 export default app;
