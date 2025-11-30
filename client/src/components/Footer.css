@@ -12,3 +12,55 @@
   margin: 0;
   font-size: 14px;
 }
+
+.footer-contact {
+  margin-top: 8px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.footer-email,
+.footer-feedback {
+  color: #64748b;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.footer-email:hover {
+  color: #ea4335;
+  transform: translateY(-1px);
+}
+
+.footer-feedback:hover {
+  color: #667eea;
+  transform: translateY(-1px);
+}
+
+.gmail-icon {
+  width: 18px;
+  height: 18px;
+  color: #ea4335;
+}
+
+.footer-divider {
+  color: #cbd5e1;
+  font-weight: 300;
+}
+
+@media (max-width: 768px) {
+  .footer-contact {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .footer-divider {
+    display: none;
+  }
+}
