@@ -182,31 +182,4 @@ export const userService = {
   },
 };
 
-// Feedback service
-export const feedbackService = {
-  submitFeedback: (feedbackData) => {
-    return api.post('/feedback', feedbackData);
-  },
-  
-  getMyFeedback: () => {
-    return api.get('/feedback/my-feedback');
-  },
-  
-  getAllFeedback: (params) => {
-    return api.get('/feedback/all', { params });
-  },
-  
-  updateFeedbackStatus: (feedbackId, status) => {
-    return api.patch(`/feedback/${feedbackId}/status`, { status });
-  },
-  
-  respondToFeedback: (feedbackId, response) => {
-    return api.patch(`/feedback/${feedbackId}/respond`, { response });
-  },
-  
-  getFeedbackStats: () => {
-    return api.get('/feedback/stats');
-  },
-};
-
 export default api;

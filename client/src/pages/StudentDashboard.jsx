@@ -65,11 +65,6 @@ const StudentDashboard = () => {
     navigate('/student/status');
   };
 
-  const handleNavigateToFeedback = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    navigate('/feedback');
-  };
-
   if (loading) {
     return <ChipLoader fullScreen message="Loading dashboard..." />;
   }
@@ -173,18 +168,6 @@ const StudentDashboard = () => {
               </svg>
             }
             onClick={handleNavigateToStatus}
-          />
-
-          <ActionCard
-            title="Feedback"
-            subtitle="Share & view feedback"
-            color="#8b5cf6"
-            icon={
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-              </svg>
-            }
-            onClick={handleNavigateToFeedback}
           />
         </div>
       </div>

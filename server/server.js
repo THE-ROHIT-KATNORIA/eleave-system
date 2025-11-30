@@ -10,7 +10,6 @@ import authRoutes from './routes/auth.js';
 import leavesRoutes from './routes/leaves.js';
 import usersRoutes from './routes/users.js';
 import calendarRoutes from './routes/calendar.js';
-import feedbackRoutes from './routes/feedback.js';
 
 // Load environment variables
 dotenv.config();
@@ -86,9 +85,6 @@ app.use('/api/users', usersRoutes);
 
 // Mount calendar routes
 app.use('/api/calendar', calendarRoutes);
-
-// Mount feedback routes
-app.use('/api/feedback', feedbackRoutes);
 
 // Basic error handling middleware
 app.use((err, req, res, next) => {
