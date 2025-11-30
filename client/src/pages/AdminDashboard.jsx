@@ -44,6 +44,14 @@ const AdminDashboard = () => {
     navigate('/admin/streams', { state: { selectedStream: stream } });
   };
 
+  const handleNavigateToFeedback = () => {
+    navigate('/feedback/new');
+  };
+
+  const handleNavigateToMyFeedback = () => {
+    navigate('/feedback/my-feedback');
+  };
+
   if (loading) {
     return <ChipLoader fullScreen message="Loading dashboard..." />;
   }
@@ -56,18 +64,30 @@ const AdminDashboard = () => {
             <h1>Admin Dashboard</h1>
             <p className="dashboard-subtitle">Manage leave requests across all streams</p>
           </div>
-          <button 
-            className="manage-accounts-btn"
-            onClick={() => navigate('/admin/manage-accounts')}
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-              <circle cx="9" cy="7" r="4"/>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-            </svg>
-            Manage Accounts
-          </button>
+          <div style={{ display: 'flex', gap: '1rem' }}>
+            <button 
+              className="manage-accounts-btn"
+              onClick={handleNavigateToMyFeedback}
+              style={{ background: '#8b5cf6' }}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              Feedback
+            </button>
+            <button 
+              className="manage-accounts-btn"
+              onClick={() => navigate('/admin/manage-accounts')}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+              Manage Accounts
+            </button>
+          </div>
         </div>
       </div>
 

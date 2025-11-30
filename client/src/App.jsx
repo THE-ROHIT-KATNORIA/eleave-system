@@ -12,6 +12,8 @@ import StreamSection from './pages/StreamSection';
 import CreateAdmin from './pages/CreateAdmin';
 import ManageAccounts from './pages/ManageAccounts';
 import CalendarDemo from './components/calendar/CalendarDemo';
+import FeedbackForm from './pages/FeedbackForm';
+import MyFeedback from './pages/MyFeedback';
 import ErrorBoundary from './components/ErrorBoundary';
 import { ToastProvider } from './components/Toast';
 import './App.css';
@@ -87,6 +89,22 @@ function AppContent() {
           element={
             <ProtectedRoute requiredRole="admin">
               <ManageAccounts />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/feedback/new" 
+          element={
+            <ProtectedRoute>
+              <FeedbackForm />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/feedback/my-feedback" 
+          element={
+            <ProtectedRoute>
+              <MyFeedback />
             </ProtectedRoute>
           } 
         />
