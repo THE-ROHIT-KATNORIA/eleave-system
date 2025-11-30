@@ -26,17 +26,25 @@ connectDB();
 // CORS configuration - allow frontend origin
 const allowedOrigins = [
   'http://localhost:5173', // Development
+  'https://eleave.vercel.app', // Production Vercel
   process.env.FRONTEND_URL, // Production (set this in your hosting platform)
 ].filter(Boolean);
+
+console.log('Allowed CORS origins:', allowedOrigins);
 
 app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (mobile apps, Postman, etc.)
     if (!origin) return callback(null, true);
     
+    console.log('CORS request from origin:', origin);
+    
     if (allowedOrigins.indexOf(origin) !== -1) {
+      console.log('CORS allowed for:', origin);
       callback(null, true);
     } else {
+      console.log('CORS blocked for:', origin);
+      console.log('Allowed origins are:', allowedOrigins);
       callback(new Error('Not allowed by CORS'));
     }
   },
