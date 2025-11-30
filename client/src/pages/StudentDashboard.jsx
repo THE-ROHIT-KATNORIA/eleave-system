@@ -67,12 +67,7 @@ const StudentDashboard = () => {
 
   const handleNavigateToFeedback = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    navigate('/feedback/new');
-  };
-
-  const handleNavigateToMyFeedback = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    navigate('/feedback/my-feedback');
+    navigate('/feedback');
   };
 
   if (loading) {
@@ -181,8 +176,8 @@ const StudentDashboard = () => {
           />
 
           <ActionCard
-            title="Give Feedback"
-            subtitle="Share your thoughts"
+            title="Feedback"
+            subtitle="Share & view feedback"
             color="#8b5cf6"
             icon={
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -190,18 +185,6 @@ const StudentDashboard = () => {
               </svg>
             }
             onClick={handleNavigateToFeedback}
-          />
-
-          <ActionCard
-            title="My Feedback"
-            subtitle="View your feedback"
-            color="#ec4899"
-            icon={
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-              </svg>
-            }
-            onClick={handleNavigateToMyFeedback}
           />
         </div>
       </div>

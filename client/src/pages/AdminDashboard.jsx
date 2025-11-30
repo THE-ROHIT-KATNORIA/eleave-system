@@ -45,11 +45,7 @@ const AdminDashboard = () => {
   };
 
   const handleNavigateToFeedback = () => {
-    navigate('/feedback/new');
-  };
-
-  const handleNavigateToMyFeedback = () => {
-    navigate('/feedback/my-feedback');
+    navigate('/feedback');
   };
 
   if (loading) {
@@ -64,10 +60,10 @@ const AdminDashboard = () => {
             <h1>Admin Dashboard</h1>
             <p className="dashboard-subtitle">Manage leave requests across all streams</p>
           </div>
-          <div style={{ display: 'flex', gap: '1rem' }}>
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
             <button 
               className="manage-accounts-btn"
-              onClick={handleNavigateToMyFeedback}
+              onClick={handleNavigateToFeedback}
               style={{ background: '#8b5cf6' }}
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

@@ -12,8 +12,7 @@ import StreamSection from './pages/StreamSection';
 import CreateAdmin from './pages/CreateAdmin';
 import ManageAccounts from './pages/ManageAccounts';
 import CalendarDemo from './components/calendar/CalendarDemo';
-import FeedbackForm from './pages/FeedbackForm';
-import MyFeedback from './pages/MyFeedback';
+import Feedback from './pages/Feedback';
 import ErrorBoundary from './components/ErrorBoundary';
 import { ToastProvider } from './components/Toast';
 import './App.css';
@@ -93,18 +92,10 @@ function AppContent() {
           } 
         />
         <Route 
-          path="/feedback/new" 
+          path="/feedback" 
           element={
             <ProtectedRoute>
-              <FeedbackForm />
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="/feedback/my-feedback" 
-          element={
-            <ProtectedRoute>
-              <MyFeedback />
+              <Feedback />
             </ProtectedRoute>
           } 
         />
